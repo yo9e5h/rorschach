@@ -17,7 +17,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
 import { RorschachHeader } from "./components/rorschach-header";
 import { toast } from "sonner";
-import { sampleResponses } from "./lib/sample-data";
 
 function App() {
   const [responses, setResponses] = useState<RorschachResponse[]>(
@@ -110,12 +109,6 @@ function App() {
       });
       console.error("Calculation error:", err);
     }
-  };
-
-  const loadSampleData = () => {
-    setResponses(sampleResponses);
-    setResults(null);
-    setActiveTab("input");
   };
 
   const confirmClearAll = () => {
@@ -257,10 +250,7 @@ function App() {
   return (
     <div className="h-screen">
       <div className="mx-auto p-6">
-        <RorschachHeader
-          onImport={importResponses}
-          onExport={exportResponses}
-        />
+        <RorschachHeader onImport={importResponses} />
 
         <Tabs
           value={activeTab}
@@ -282,8 +272,8 @@ function App() {
 
             <div className="flex md:justify-end items-center mt-4">
               <div className="flex gap-2">
-                <Button variant="outline" onClick={loadSampleData}>
-                  Load Sample Data
+                <Button variant="outline" onClick={exportResponses}>
+                  Export as JSON
                 </Button>
                 <Button variant="destructive" onClick={confirmClearAll}>
                   Clear All

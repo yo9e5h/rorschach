@@ -14,7 +14,7 @@ export function ModeToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon-sm" title="Toggle theme">
+        <Button variant="outline" size="icon" title="Toggle theme">
           {theme === "system" ? (
             <Monitor />
           ) : (

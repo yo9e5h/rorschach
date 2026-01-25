@@ -188,8 +188,11 @@ export function RorschachInputForm({
                           className={`hover:bg-muted/50 ${
                             editingResponse?.card === card &&
                             editingResponse?.cardIndex === cardIndex
-                              ? "bg-blue-300/50"
-                              : ""
+                              ? "bg-blue-400/30"
+                              : deletingResponse?.card === card &&
+                                  deletingResponse?.cardIndex === cardIndex
+                                ? "bg-red-400/20"
+                                : ""
                           }`}
                         >
                           <td className="border-b border-r p-2 text-center font-medium">
