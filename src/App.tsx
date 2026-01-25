@@ -15,9 +15,9 @@ import {
   AlertDialogTitle,
 } from "./components/ui/alert-dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { ModeToggle } from "./components/theme/mode-toggle";
-import { sampleResponses } from "./lib/sample-data";
+import { RorschachHeader } from "./components/rorschach-header";
 import { toast } from "sonner";
+import { sampleResponses } from "./lib/sample-data";
 
 function App() {
   const [responses, setResponses] = useState<RorschachResponse[]>(
@@ -112,6 +112,12 @@ function App() {
     }
   };
 
+  const loadSampleData = () => {
+    setResponses(sampleResponses);
+    setResults(null);
+    setActiveTab("input");
+  };
+
   const confirmClearAll = () => {
     setClearingAll(true);
   };
@@ -123,21 +129,138 @@ function App() {
     setClearingAll(false);
   };
 
-  const loadSampleData = () => {
-    setResponses(sampleResponses);
+  const exportResponses = () => {
+    const validResponses = responses.filter((r) => r.card && r.card !== "");
+
+    if (validResponses.length === 0) {
+      toast.error("No responses to export.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const dataStr = JSON.stringify(validResponses, null, 2);
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `rorschach-responses-${new Date().toISOString().replace(/:/g, "-").replace(/\..+/, "")}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast.success("Responses exported successfully!", {
+      position: "top-center",
+    });
+  };
+
+  const validateResponse = (obj: unknown): obj is RorschachResponse => {
+    if (typeof obj !== "object" || obj === null) return false;
+
+    const response = obj as Record<string, unknown>;
+
+    const validCards = [
+      "I",
+      "II",
+      "III",
+      "IV",
+      "V",
+      "VI",
+      "VII",
+      "VIII",
+      "IX",
+      "X",
+    ];
+    if (!validCards.includes(response.card as string)) return false;
+
+    if (typeof response.response_index !== "number") return false;
+    if (typeof response.location !== "string") return false;
+    if (typeof response.dq !== "string") return false;
+    if (!Array.isArray(response.determinants)) return false;
+    if (typeof response.fq !== "string") return false;
+    if (typeof response.pair !== "boolean") return false;
+    if (typeof response.FrScore !== "boolean") return false;
+    if (typeof response.rFScore !== "boolean") return false;
+    if (!Array.isArray(response.contents)) return false;
+    if (typeof response.popular !== "boolean") return false;
+    if (typeof response.z !== "string") return false;
+    if (!Array.isArray(response.special_scores)) return false;
+
+    return true;
+  };
+
+  const importResponses = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const content = e.target?.result as string;
+        const parsed = JSON.parse(content);
+
+        if (!Array.isArray(parsed)) {
+          toast.error("Invalid JSON format: Expected an array of responses.", {
+            position: "top-center",
+          });
+          return;
+        }
+
+        if (parsed.length === 0) {
+          toast.error("JSON file contains no responses.", {
+            position: "top-center",
+          });
+          return;
+        }
+
+        for (let i = 0; i < parsed.length; i++) {
+          if (!validateResponse(parsed[i])) {
+            toast.error(
+              `Invalid response format at index ${i}. Please check the JSON structure.`,
+              {
+                position: "top-center",
+              },
+            );
+            return;
+          }
+        }
+
+        setResponses(parsed);
+        setResults(null);
+        setActiveTab("input");
+        toast.success(`Successfully imported ${parsed.length} responses!`, {
+          position: "top-center",
+        });
+      } catch (err) {
+        toast.error(
+          err instanceof Error
+            ? `Failed to parse JSON: ${err.message}`
+            : "Invalid JSON file format.",
+          {
+            position: "top-center",
+          },
+        );
+      }
+    };
+
+    reader.onerror = () => {
+      toast.error("Failed to read file.", {
+        position: "top-center",
+      });
+    };
+
+    reader.readAsText(file);
+    event.target.value = "";
   };
 
   return (
     <div className="h-screen">
       <div className="mx-auto p-6">
-        <header className="flex justify-between items-start mb-4">
-          <div className="flex flex-col space-y-2">
-            <h1 className="text-3xl font-bold text-foreground">
-              Rorschach Structural Summary
-            </h1>
-          </div>
-          <ModeToggle />
-        </header>
+        <RorschachHeader
+          onImport={importResponses}
+          onExport={exportResponses}
+        />
 
         <Tabs
           value={activeTab}
@@ -171,11 +294,7 @@ function App() {
           </TabsContent>
 
           <TabsContent value="results" className="space-y-4">
-            {results && (
-              <>
-                <RorschachResults results={results} />
-              </>
-            )}
+            {results && <RorschachResults results={results} />}
           </TabsContent>
         </Tabs>
 
