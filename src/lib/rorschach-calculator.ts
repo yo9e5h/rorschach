@@ -389,7 +389,7 @@ export function calculateRorschach(
 
   // DEPI
   const depi_criteria = {
-    c1: SumV + SumV + SumV > 0 || FD > 2,
+    c1: SumV > 0 || FD > 2,
     c2: ColorShadingBlends > 0 || S > 2,
     c3:
       (EgocentricityIndex > 0.44 && Fr + rF === 0) || EgocentricityIndex < 0.33,
@@ -462,13 +462,29 @@ export function calculateRorschach(
     c4: Populars > 7,
     c5: FQx_plus > 1,
   };
+
+  const criteria_1_to_4_count = [
+    obs_criteria.c1,
+    obs_criteria.c2,
+    obs_criteria.c3,
+    obs_criteria.c4,
+  ].filter((v) => v).length;
+
+  const criteria_1_to_5_count = [
+    obs_criteria.c1,
+    obs_criteria.c2,
+    obs_criteria.c3,
+    obs_criteria.c4,
+    obs_criteria.c5,
+  ].filter((v) => v).length;
+
   const obs_rules = {
-    r1: obs_criteria.c1 && obs_criteria.c2,
-    r2: obs_criteria.c1 && obs_criteria.c3,
-    r3: obs_criteria.c1 && obs_criteria.c4,
-    r4: obs_criteria.c1 && obs_criteria.c5,
-    r5: obs_criteria.c2 && obs_criteria.c3 && obs_criteria.c4,
+    r1: criteria_1_to_5_count === 5,
+    r2: criteria_1_to_4_count >= 2 && FQx_plus > 3,
+    r3: criteria_1_to_5_count >= 3 && X_plus_percent > 0.89,
+    r4: FQx_plus > 3 && X_plus_percent > 0.89,
   };
+
   const obs_score = Object.values(obs_rules).filter((v) => v).length;
   const is_obs_positive = obs_score > 0;
   const OBS = `${obs_score}, ${is_obs_positive ? "Positive" : "NO"}`;

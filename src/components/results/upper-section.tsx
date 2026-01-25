@@ -424,16 +424,12 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="font-mono tabular-nums">{results.CONTAM}</span>
             </div>
             <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2 border-b border-border/50">
-              <span className="font-bold">Sum6</span>
-              <span className="font-mono font-bold tabular-nums">
-                {results.Sum6}
-              </span>
+              <span className="font-semibold">Sum6</span>
+              <span className="font-mono tabular-nums">{results.Sum6}</span>
             </div>
             <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2 border-b border-border/50">
-              <span className="font-bold">WSum6</span>
-              <span className="font-mono font-bold tabular-nums">
-                {results.WSum6}
-              </span>
+              <span className="font-semibold">WSum6</span>
+              <span className="font-mono tabular-nums">{results.WSum6}</span>
             </div>
           </div>
           <div className="mt-6 grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
@@ -441,7 +437,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 AB
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.AB}
               </span>
             </div>
@@ -449,7 +445,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 AG
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.AG}
               </span>
             </div>
@@ -457,7 +453,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 COP
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.COP}
               </span>
             </div>
@@ -465,7 +461,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 CP
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.CP}
               </span>
             </div>
@@ -473,7 +469,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 GHR
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.GHR}
               </span>
             </div>
@@ -481,7 +477,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 PHR
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.PHR}
               </span>
             </div>
@@ -489,7 +485,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 MOR
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.MOR}
               </span>
             </div>
@@ -497,7 +493,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 PER
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.PER}
               </span>
             </div>
@@ -505,7 +501,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               <span className="text-base uppercase font-medium text-foreground mb-2">
                 PSV
               </span>
-              <span className="text-xl font-mono font-bold tabular-nums">
+              <span className="text-xl font-mono tabular-nums">
                 {results.PSV}
               </span>
             </div>
@@ -527,7 +523,7 @@ export function UpperSection({ results }: UpperSectionProps) {
               {results.blends_list.map((blend, idx) => (
                 <div
                   key={idx}
-                  className="py-3 rounded-md border border-border bg-muted/30 hover:bg-muted/50 transition-colors font-mono text-center"
+                  className="py-3 rounded-md border border-border bg-muted/30 hover:bg-muted/50 transition-colors font-mono tabular-nums text-center"
                 >
                   {blend.join(".")}
                 </div>

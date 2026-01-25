@@ -121,6 +121,8 @@ export function RorschachInputForm({
     closeEditDialog();
   };
 
+  console.log("Rendering RorschachInputForm with responses:", responses);
+
   return (
     <>
       <h1 className="text-2xl font-bold mb-2">Input Table</h1>
@@ -161,38 +163,22 @@ export function RorschachInputForm({
                 <div className="overflow-x-auto">
                   <table className="w-full min-w-250 text-sm">
                     <thead>
-                      <tr className="bg-muted">
-                        <th className="border-b border-r p-2 font-semibold">
-                          #
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          Location
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          DQ
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
+                      <tr className="bg-muted border-y">
+                        <th className="border-r p-2 font-semibold">#</th>
+                        <th className="border-r p-2 font-semibold">Location</th>
+                        <th className="border-r p-2 font-semibold">DQ</th>
+                        <th className="border-r p-2 font-semibold">
                           Determinants
                         </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          FQ
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          Pair
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          Contents
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          Pop
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
-                          Z
-                        </th>
-                        <th className="border-b border-r p-2 font-semibold">
+                        <th className="border-r p-2 font-semibold">FQ</th>
+                        <th className="border-r p-2 font-semibold">(2)/r</th>
+                        <th className="border-r p-2 font-semibold">Contents</th>
+                        <th className="border-r p-2 font-semibold">P</th>
+                        <th className="border-r p-2 font-semibold">Z</th>
+                        <th className="border-r p-2 font-semibold">
                           Special Scores
                         </th>
-                        <th className="border-b p-2 font-semibold">Actions</th>
+                        <th className="p-2 font-semibold">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="[&>tr:last-child>td]:border-b-0">
@@ -210,34 +196,39 @@ export function RorschachInputForm({
                             {response.response_index}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.location || "-"}
+                            {response.location || ""}
                             {response.location_number
                               ? ` (${response.location_number})`
                               : ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.dq || "-"}
+                            {response.dq || ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.determinants?.join(", ") || "-"}
+                            {response.determinants?.join(", ") || ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.fq || "-"}
+                            {response.fq || ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.pair || "-"}
+                            {response.pair ? "(2)" : ""}
+                            {response.rFScore
+                              ? "/rF"
+                              : response.FrScore
+                                ? "/fR"
+                                : ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.contents?.join(", ") || "-"}
+                            {response.contents?.join(", ") || ""}
                           </td>
                           <td className="border-b border-r p-2 text-center">
-                            {response.popular ? "✓" : ""}
+                            {response.popular ? "P" : ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.z || "-"}
+                            {response.z || ""}
                           </td>
                           <td className="border-b border-r p-2">
-                            {response.special_scores?.join(", ") || "-"}
+                            {response.special_scores?.join(", ") || ""}
                           </td>
                           <td className="border-b p-2 text-center">
                             <div className="flex gap-1 justify-center">

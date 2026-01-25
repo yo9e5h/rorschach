@@ -19,13 +19,11 @@ export function LowerSection({ results }: LowerSectionProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             <div>
               <div className="text-xs text-muted-foreground mb-1">R</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
-                {results.R}
-              </div>
+              <div className="text-xl font-mono tabular-nums">{results.R}</div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">Lambda</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
+              <div className="text-xl font-mono tabular-nums">
                 {results.Lambda.toFixed(2)}
               </div>
             </div>
@@ -43,37 +41,35 @@ export function LowerSection({ results }: LowerSectionProps) {
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">EA</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
+              <div className="text-xl font-mono tabular-nums">
                 {results.EA.toFixed(1)}
               </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">es</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
-                {results.es}
-              </div>
+              <div className="text-xl font-mono tabular-nums">{results.es}</div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">D</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
+              <div className="text-xl font-mono tabular-nums">
                 {results.D_score}
               </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">Adj es</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
+              <div className="text-xl font-mono tabular-nums">
                 {results.AdjEs}
               </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">Adj D</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
+              <div className="text-xl font-mono tabular-nums">
                 {results.AdjD}
               </div>
             </div>
             <div>
               <div className="text-xs text-muted-foreground mb-1">EB Per</div>
-              <div className="text-2xl font-bold font-mono tabular-nums">
+              <div className="text-xl font-mono tabular-nums">
                 {results.EBPer}
               </div>
             </div>
@@ -117,7 +113,7 @@ export function LowerSection({ results }: LowerSectionProps) {
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">WSumC</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {results.WSumC.toFixed(1)}
                 </td>
               </tr>
@@ -147,7 +143,7 @@ export function LowerSection({ results }: LowerSectionProps) {
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">Afr</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {results.Afr.toFixed(2)}
                 </td>
               </tr>
@@ -240,7 +236,7 @@ export function LowerSection({ results }: LowerSectionProps) {
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">H Total</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {results.H_total}
                 </td>
               </tr>
@@ -268,7 +264,7 @@ export function LowerSection({ results }: LowerSectionProps) {
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">3r+(2)/R</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {results.EgocentricityIndex.toFixed(2)}
                 </td>
               </tr>
@@ -355,7 +351,7 @@ export function LowerSection({ results }: LowerSectionProps) {
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">WSum6</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {results.WSum6}
                 </td>
               </tr>
@@ -424,7 +420,7 @@ export function LowerSection({ results }: LowerSectionProps) {
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">Zd</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {typeof results.Zd === "number"
                     ? results.Zd.toFixed(1)
                     : results.Zd}
@@ -465,19 +461,19 @@ export function LowerSection({ results }: LowerSectionProps) {
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">XA%</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {(results.XA_percent * 100).toFixed(1)}%
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">WDA%</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {(results.WDA_percent * 100).toFixed(1)}%
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">X+%</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {(results.X_plus_percent * 100).toFixed(1)}%
                 </td>
               </tr>
@@ -489,7 +485,7 @@ export function LowerSection({ results }: LowerSectionProps) {
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">X-%</td>
-                <td className="py-2 text-right font-mono tabular-nums font-bold">
+                <td className="py-2 text-right font-mono tabular-nums">
                   {(results.X_minus_percent * 100).toFixed(1)}%
                 </td>
               </tr>
