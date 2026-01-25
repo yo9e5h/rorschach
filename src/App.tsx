@@ -116,7 +116,26 @@ function App() {
   };
 
   const handleReset = () => {
-    setResponses([]);
+    setResponses(
+      ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"].map(
+        (card) => ({
+          response_index: 1,
+          card,
+          location: "",
+          dq: "",
+          determinants: [],
+          fq: "",
+          pair: false,
+          FrScore: false,
+          rFScore: false,
+          contents: [],
+          popular: false,
+          z: "",
+          special_scores: [],
+          zscore: undefined,
+        }),
+      ),
+    );
     setResults(null);
     setActiveTab("input");
     setClearingAll(false);
