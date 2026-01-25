@@ -2,7 +2,6 @@ import type { RorschachResponse } from "@/types/rorschach";
 import { Z_SCORE_TABLE } from "@/lib/rorschach-constants";
 import { classifyGPHR } from "@/lib/rorschach-calculator";
 import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -125,7 +124,7 @@ export function RorschachInputForm({
   return (
     <>
       <h1 className="text-2xl font-bold mb-2">Input Table</h1>
-      <div className="text-sm text-muted-foreground bg-accent p-4 rounded-lg border">
+      <div className="relative text-sm text-muted-foreground bg-accent p-4 rounded-lg border">
         <h3 className="font-semibold mb-2 text-accent-foreground">
           Instructions:
         </h3>
@@ -159,8 +158,8 @@ export function RorschachInputForm({
                   No responses yet. Click "Add Response" to add one.
                 </div>
               ) : (
-                <ScrollArea className="w-full">
-                  <table className="w-full text-sm">
+                <div className="overflow-x-auto">
+                  <table className="w-full min-w-250 text-sm">
                     <thead>
                       <tr className="bg-muted">
                         <th className="border-b border-r p-2 font-semibold">
@@ -264,7 +263,7 @@ export function RorschachInputForm({
                       ))}
                     </tbody>
                   </table>
-                </ScrollArea>
+                </div>
               )}
             </div>
           );
@@ -307,7 +306,7 @@ export function RorschachInputForm({
                   );
                 }
               }}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              variant="destructive"
             >
               Delete
             </AlertDialogAction>

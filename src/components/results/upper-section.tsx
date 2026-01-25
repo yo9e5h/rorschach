@@ -1,6 +1,5 @@
 import type { CalculationResults } from "@/types/rorschach";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface UpperSectionProps {
   results: CalculationResults;
@@ -217,21 +216,17 @@ export function UpperSection({ results }: UpperSectionProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ScrollArea>
-            <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
-              {Object.entries(results.single_determinants).map(
-                ([key, value]) => (
-                  <div
-                    key={key}
-                    className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2"
-                  >
-                    <span className="font-semibold">{key}</span>
-                    <span className="font-mono tabular-nums">{value}</span>
-                  </div>
-                ),
-              )}
-            </div>
-          </ScrollArea>
+          <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
+            {Object.entries(results.single_determinants).map(([key, value]) => (
+              <div
+                key={key}
+                className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2"
+              >
+                <span className="font-semibold">{key}</span>
+                <span className="font-mono tabular-nums">{value}</span>
+              </div>
+            ))}
+          </div>
         </CardContent>
       </Card>
 
@@ -243,126 +238,116 @@ export function UpperSection({ results }: UpperSectionProps) {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ScrollArea>
-            <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">H</span>
-                <span className="font-mono tabular-nums">{results.H}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">(H)</span>
-                <span className="font-mono tabular-nums">
-                  {results.H_paren}
-                </span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Hd</span>
-                <span className="font-mono tabular-nums">{results.Hd}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">(Hd)</span>
-                <span className="font-mono tabular-nums">
-                  {results.Hd_paren}
-                </span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Hx</span>
-                <span className="font-mono tabular-nums">{results.Hx}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">A</span>
-                <span className="font-mono tabular-nums">{results.A}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">(A)</span>
-                <span className="font-mono tabular-nums">
-                  {results.A_paren}
-                </span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Ad</span>
-                <span className="font-mono tabular-nums">{results.Ad}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">(Ad)</span>
-                <span className="font-mono tabular-nums">
-                  {results.Ad_paren}
-                </span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">An</span>
-                <span className="font-mono tabular-nums">{results.An}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Art</span>
-                <span className="font-mono tabular-nums">{results.Art}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Ay</span>
-                <span className="font-mono tabular-nums">{results.Ay}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Bl</span>
-                <span className="font-mono tabular-nums">{results.Bl}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Bt</span>
-                <span className="font-mono tabular-nums">{results.Bt}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Cg</span>
-                <span className="font-mono tabular-nums">{results.Cg}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Cl</span>
-                <span className="font-mono tabular-nums">{results.Cl}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Ex</span>
-                <span className="font-mono tabular-nums">{results.Ex}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Fd</span>
-                <span className="font-mono tabular-nums">{results.Fd}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Fi</span>
-                <span className="font-mono tabular-nums">{results.Fi}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Ge</span>
-                <span className="font-mono tabular-nums">{results.Ge}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Hh</span>
-                <span className="font-mono tabular-nums">{results.Hh}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Ls</span>
-                <span className="font-mono tabular-nums">{results.Ls}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Na</span>
-                <span className="font-mono tabular-nums">{results.Na}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Sc</span>
-                <span className="font-mono tabular-nums">{results.Sc}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Sx</span>
-                <span className="font-mono tabular-nums">{results.Sx}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Xy</span>
-                <span className="font-mono tabular-nums">{results.Xy}</span>
-              </div>
-              <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
-                <span className="font-semibold">Id</span>
-                <span className="font-mono tabular-nums">{results.Id}</span>
-              </div>
+          <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">H</span>
+              <span className="font-mono tabular-nums">{results.H}</span>
             </div>
-          </ScrollArea>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">(H)</span>
+              <span className="font-mono tabular-nums">{results.H_paren}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Hd</span>
+              <span className="font-mono tabular-nums">{results.Hd}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">(Hd)</span>
+              <span className="font-mono tabular-nums">{results.Hd_paren}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Hx</span>
+              <span className="font-mono tabular-nums">{results.Hx}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">A</span>
+              <span className="font-mono tabular-nums">{results.A}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">(A)</span>
+              <span className="font-mono tabular-nums">{results.A_paren}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Ad</span>
+              <span className="font-mono tabular-nums">{results.Ad}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">(Ad)</span>
+              <span className="font-mono tabular-nums">{results.Ad_paren}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">An</span>
+              <span className="font-mono tabular-nums">{results.An}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Art</span>
+              <span className="font-mono tabular-nums">{results.Art}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Ay</span>
+              <span className="font-mono tabular-nums">{results.Ay}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Bl</span>
+              <span className="font-mono tabular-nums">{results.Bl}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Bt</span>
+              <span className="font-mono tabular-nums">{results.Bt}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Cg</span>
+              <span className="font-mono tabular-nums">{results.Cg}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Cl</span>
+              <span className="font-mono tabular-nums">{results.Cl}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Ex</span>
+              <span className="font-mono tabular-nums">{results.Ex}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Fd</span>
+              <span className="font-mono tabular-nums">{results.Fd}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Fi</span>
+              <span className="font-mono tabular-nums">{results.Fi}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Ge</span>
+              <span className="font-mono tabular-nums">{results.Ge}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Hh</span>
+              <span className="font-mono tabular-nums">{results.Hh}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Ls</span>
+              <span className="font-mono tabular-nums">{results.Ls}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Na</span>
+              <span className="font-mono tabular-nums">{results.Na}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Sc</span>
+              <span className="font-mono tabular-nums">{results.Sc}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Sx</span>
+              <span className="font-mono tabular-nums">{results.Sx}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Xy</span>
+              <span className="font-mono tabular-nums">{results.Xy}</span>
+            </div>
+            <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
+              <span className="font-semibold">Id</span>
+              <span className="font-mono tabular-nums">{results.Id}</span>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -538,18 +523,16 @@ export function UpperSection({ results }: UpperSectionProps) {
         </CardHeader>
         <CardContent>
           {results.blends_list.length > 0 ? (
-            <ScrollArea>
-              <div className="grid grid-cols-2">
-                {results.blends_list.map((blend, idx) => (
-                  <div
-                    key={idx}
-                    className="py-3 rounded-md border border-border bg-muted/30 hover:bg-muted/50 transition-colors font-mono text-center"
-                  >
-                    {blend.join(".")}
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
+            <div className="grid grid-cols-2">
+              {results.blends_list.map((blend, idx) => (
+                <div
+                  key={idx}
+                  className="py-3 rounded-md border border-border bg-muted/30 hover:bg-muted/50 transition-colors font-mono text-center"
+                >
+                  {blend.join(".")}
+                </div>
+              ))}
+            </div>
           ) : (
             <div className="text-center text-sm text-muted-foreground py-8">
               No blends found
