@@ -447,10 +447,9 @@ export function LowerSection({ results }: LowerSectionProps) {
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
-                <td className="py-2 font-semibold">2:AB+Art+Ay</td>
+                <td className="py-2 font-semibold">2AB+Art+Ay</td>
                 <td className="py-2 text-right font-mono tabular-nums">
-                  {results.H + results.H_paren + results.Hd + results.Hd_paren}:
-                  {results.AB + results.Art + results.Ay}
+                  {2 * results.AB + results.Art + results.Ay}
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
