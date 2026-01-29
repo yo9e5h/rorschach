@@ -1,22 +1,83 @@
 import type { CalculationResults } from "@/types/rorschach";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react";
+import { toast } from "sonner";
+import { useRef } from "react";
+import { copyTableToClipboard, copyGridToClipboard } from "@/lib/copy-utils";
 
 interface UpperSectionProps {
   results: CalculationResults;
 }
 
 export function UpperSection({ results }: UpperSectionProps) {
+  const locationFeaturesRef = useRef<HTMLTableElement>(null);
+  const dqTableRef = useRef<HTMLTableElement>(null);
+  const formQualityTableRef = useRef<HTMLTableElement>(null);
+  const mQualityTableRef = useRef<HTMLTableElement>(null);
+  const singleDeterminantsRef = useRef<HTMLDivElement>(null);
+  const contentsRef = useRef<HTMLDivElement>(null);
+  const approachTableRef = useRef<HTMLTableElement>(null);
+  const specialScoresRef = useRef<HTMLDivElement>(null);
+  const blendsRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = async (
+    ref: React.RefObject<
+      HTMLElement | HTMLTableElement | HTMLDivElement | null
+    >,
+    sectionName: string,
+    isGrid = false,
+  ) => {
+    if (!ref.current) return;
+
+    try {
+      let success = false;
+      if (isGrid) {
+        success = await copyGridToClipboard(
+          ref.current as HTMLElement,
+          sectionName,
+        );
+      } else {
+        success = await copyTableToClipboard(ref.current as HTMLTableElement);
+      }
+
+      if (success) {
+        toast.success(`${sectionName} copied to clipboard!`, {
+          position: "top-center",
+        });
+      } else {
+        toast.error("Failed to copy to clipboard", {
+          position: "top-center",
+        });
+      }
+    } catch {
+      toast.error("Failed to copy to clipboard", {
+        position: "top-center",
+      });
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {/* Location Features */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Location Features
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Location Features</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                handleCopy(locationFeaturesRef, "Location Features")
+              }
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={locationFeaturesRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">Zf</td>
@@ -76,12 +137,20 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* DQ */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Developmental Quality
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Developmental Quality</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(dqTableRef, "Developmental Quality")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={dqTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">DQ+</td>
@@ -121,12 +190,20 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* Form Quality */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Form Quality
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Form Quality</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(formQualityTableRef, "Form Quality")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={formQualityTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">FQ+</td>
@@ -166,12 +243,20 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* M Quality */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            M Quality
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>M Quality</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(mQualityTableRef, "M Quality")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={mQualityTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">MQ+</td>
@@ -211,12 +296,25 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* Single Determinants */}
       <Card className="md:col-span-2 shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Single Determinants
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Single Determinants</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                handleCopy(singleDeterminantsRef, "Single Determinants", true)
+              }
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
+          <div
+            ref={singleDeterminantsRef}
+            className="grid grid-cols-2 divide-y divide-border/50 gap-x-6"
+          >
             {Object.entries(results.single_determinants).map(([key, value]) => (
               <div
                 key={key}
@@ -233,12 +331,23 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* Contents */}
       <Card className="md:col-span-2 shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Contents
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Contents</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(contentsRef, "Contents", true)}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
+          <div
+            ref={contentsRef}
+            className="grid grid-cols-2 divide-y divide-border/50 gap-x-6"
+          >
             <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
               <span className="font-semibold">H</span>
               <span className="font-mono tabular-nums">{results.H}</span>
@@ -354,12 +463,20 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* Approach */}
       <Card className="md:col-span-1 shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Approach (Location Sequence)
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Approach (Location Sequence)</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(approachTableRef, "Approach")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={approachTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               {Object.entries(results.approach).map(([card, locations]) => (
                 <tr key={card} className="hover:bg-muted/30 transition-colors">
@@ -377,11 +494,21 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* Special Scores */}
       <Card className="md:col-span-2 shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Special Scores
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Special Scores</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                handleCopy(specialScoresRef, "Special Scores", true)
+              }
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent ref={specialScoresRef}>
           <div className="grid grid-cols-2 divide-y divide-border/50 gap-x-6">
             <div className="flex justify-between py-2 hover:bg-muted/30 transition-colors mx-2">
               <span className="font-semibold">DV1</span>
@@ -512,14 +639,26 @@ export function UpperSection({ results }: UpperSectionProps) {
       {/* Blends */}
       <Card className="md:col-span-1 shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Blends{" "}
-            <span className="text-muted-foreground">({results.Blends})</span>
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>
+              Blends{" "}
+              <span className="text-muted-foreground">
+                ({results.blends_list.length})
+              </span>
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(blendsRef, "Blends", true)}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent ref={blendsRef}>
           {results.blends_list.length > 0 ? (
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-2 gap-2">
               {results.blends_list.map((blend, idx) => (
                 <div
                   key={idx}

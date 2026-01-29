@@ -1,74 +1,137 @@
 import type { CalculationResults } from "@/types/rorschach";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react";
+import { toast } from "sonner";
+import { useRef } from "react";
+import {
+  copyTableToClipboard,
+  copyCoreDataToClipboard,
+} from "@/lib/copy-utils";
 
 interface LowerSectionProps {
   results: CalculationResults;
 }
 
 export function LowerSection({ results }: LowerSectionProps) {
+  const coreSectionRef = useRef<HTMLDivElement>(null);
+  const affectTableRef = useRef<HTMLTableElement>(null);
+  const interpersonalTableRef = useRef<HTMLTableElement>(null);
+  const selfPerceptionTableRef = useRef<HTMLTableElement>(null);
+  const ideationTableRef = useRef<HTMLTableElement>(null);
+  const processingTableRef = useRef<HTMLTableElement>(null);
+  const mediationTableRef = useRef<HTMLTableElement>(null);
+
+  const handleCopy = async (
+    ref: React.RefObject<
+      HTMLElement | HTMLTableElement | HTMLDivElement | null
+    >,
+    sectionName: string,
+    isCore = false,
+  ) => {
+    if (!ref.current) return;
+
+    try {
+      let success = false;
+      if (isCore) {
+        success = await copyCoreDataToClipboard(
+          ref.current as HTMLElement,
+          sectionName,
+        );
+      } else {
+        success = await copyTableToClipboard(ref.current as HTMLTableElement);
+      }
+
+      if (success) {
+        toast.success(`${sectionName} copied to clipboard!`, {
+          position: "top-center",
+        });
+      } else {
+        toast.error("Failed to copy to clipboard", {
+          position: "top-center",
+        });
+      }
+    } catch {
+      toast.error("Failed to copy to clipboard", {
+        position: "top-center",
+      });
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {/* Core Section */}
       <Card className="md:col-span-3 shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Core Section
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Core Section</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(coreSectionRef, "Core Section", true)}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <div
+            ref={coreSectionRef}
+            className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"
+          >
             <div>
-              <div className="text-xs text-muted-foreground mb-1">R</div>
+              <div className="text-base text-muted-foreground mb-1">R</div>
               <div className="text-xl font-mono tabular-nums">{results.R}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">Lambda</div>
+              <div className="text-base text-muted-foreground mb-1">Lambda</div>
               <div className="text-xl font-mono tabular-nums">
                 {results.Lambda.toFixed(2)}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">EB</div>
+              <div className="text-base text-muted-foreground mb-1">EB</div>
               <div className="text-xl font-bold font-mono tabular-nums">
                 {results.M} : {results.WSumC.toFixed(1)}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">eb</div>
+              <div className="text-base text-muted-foreground mb-1">eb</div>
               <div className="text-xl font-bold font-mono tabular-nums">
                 {results.eb}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">EA</div>
+              <div className="text-base text-muted-foreground mb-1">EA</div>
               <div className="text-xl font-mono tabular-nums">
                 {results.EA.toFixed(1)}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">es</div>
+              <div className="text-base text-muted-foreground mb-1">es</div>
               <div className="text-xl font-mono tabular-nums">{results.es}</div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">D</div>
+              <div className="text-base text-muted-foreground mb-1">D</div>
               <div className="text-xl font-mono tabular-nums">
                 {results.D_score}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">Adj es</div>
+              <div className="text-base text-muted-foreground mb-1">Adj es</div>
               <div className="text-xl font-mono tabular-nums">
                 {results.AdjEs}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">Adj D</div>
+              <div className="text-base text-muted-foreground mb-1">Adj D</div>
               <div className="text-xl font-mono tabular-nums">
                 {results.AdjD}
               </div>
             </div>
             <div>
-              <div className="text-xs text-muted-foreground mb-1">EB Per</div>
+              <div className="text-base text-muted-foreground mb-1">EB Per</div>
               <div className="text-xl font-mono tabular-nums">
                 {results.EBPer}
               </div>
@@ -80,12 +143,20 @@ export function LowerSection({ results }: LowerSectionProps) {
       {/* Affect */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Affect
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Affect</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(affectTableRef, "Affect")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={affectTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">FC</td>
@@ -106,9 +177,27 @@ export function LowerSection({ results }: LowerSectionProps) {
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
+                <td className="py-2 font-semibold">FC:CF+C</td>
+                <td className="py-2 text-right font-mono tabular-nums">
+                  {results.FC}:{results.CF + results.C}
+                </td>
+              </tr>
+              <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">Cn</td>
                 <td className="py-2 text-right font-mono tabular-nums">
                   {results.Cn}
+                </td>
+              </tr>
+              <tr className="hover:bg-muted/30 transition-colors">
+                <td className="py-2 font-semibold">Fm</td>
+                <td className="py-2 text-right font-mono tabular-nums">
+                  {results.FM}
+                </td>
+              </tr>
+              <tr className="hover:bg-muted/30 transition-colors">
+                <td className="py-2 font-semibold">m</td>
+                <td className="py-2 text-right font-mono tabular-nums">
+                  {results.m}
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
@@ -167,12 +256,20 @@ export function LowerSection({ results }: LowerSectionProps) {
       {/* Interpersonal */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Interpersonal
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Interpersonal</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(interpersonalTableRef, "Interpersonal")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={interpersonalTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">COP</td>
@@ -255,12 +352,22 @@ export function LowerSection({ results }: LowerSectionProps) {
       {/* Self-Perception */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Self-Perception
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Self-Perception</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                handleCopy(selfPerceptionTableRef, "Self-Perception")
+              }
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={selfPerceptionTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">3r+(2)/R</td>
@@ -300,12 +407,20 @@ export function LowerSection({ results }: LowerSectionProps) {
       {/* Ideation */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Ideation
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Ideation</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(ideationTableRef, "Ideation")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={ideationTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">M</td>
@@ -323,6 +438,19 @@ export function LowerSection({ results }: LowerSectionProps) {
                 <td className="py-2 font-semibold">Mp</td>
                 <td className="py-2 text-right font-mono tabular-nums">
                   {results.Mp}
+                </td>
+              </tr>
+              <tr className="hover:bg-muted/30 transition-colors">
+                <td className="py-2 font-semibold">Ma:Mp</td>
+                <td className="py-2 text-right font-mono tabular-nums">
+                  {results.Ma}:{results.Mp}
+                </td>
+              </tr>
+              <tr className="hover:bg-muted/30 transition-colors">
+                <td className="py-2 font-semibold">2:AB+Art+Ay</td>
+                <td className="py-2 text-right font-mono tabular-nums">
+                  {results.H + results.H_paren + results.Hd + results.Hd_paren}:
+                  {results.AB + results.Art + results.Ay}
                 </td>
               </tr>
               <tr className="hover:bg-muted/30 transition-colors">
@@ -369,12 +497,20 @@ export function LowerSection({ results }: LowerSectionProps) {
       {/* Processing */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Processing
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Processing</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(processingTableRef, "Processing")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={processingTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">Zf</td>
@@ -452,12 +588,20 @@ export function LowerSection({ results }: LowerSectionProps) {
       {/* Mediation */}
       <Card className="shadow-md hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-primary">
-            Mediation
+          <CardTitle className="text-lg font-semibold text-primary flex items-center justify-between">
+            <span>Mediation</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleCopy(mediationTableRef, "Mediation")}
+              className="h-8 w-8 p-0"
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <table className="w-full">
+          <table ref={mediationTableRef} className="w-full">
             <tbody className="divide-y divide-border/50">
               <tr className="hover:bg-muted/30 transition-colors">
                 <td className="py-2 font-semibold">XA%</td>
