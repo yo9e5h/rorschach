@@ -87,6 +87,7 @@ export interface CalculationResults {
 
   EBPer: number | string;
   eb: string;
+  CopingStyle: string;
 
   XA_percent: number;
   WDA_percent: number;
@@ -199,3 +200,9 @@ export interface ZScoreEntry {
 }
 
 export type ZScoreTable = Record<string, ZScoreEntry>;
+
+export interface SearchStrategy {
+  variable: string;
+  routine: string;
+  isPrimary: boolean;
+}

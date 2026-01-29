@@ -1,9 +1,260 @@
-import type { RorschachResponse, CalculationResults } from "@/types/rorschach";
+import type {
+  RorschachResponse,
+  CalculationResults,
+  SearchStrategy,
+} from "@/types/rorschach";
 import {
   Z_SCORE_TABLE,
   ZEST_TABLE,
   WSUM6_WEIGHTS,
 } from "./rorschach-constants";
+
+/**
+ * Get search strategies based on key variables
+ */
+export function getKeyVariableStrategies(
+  results: CalculationResults,
+): SearchStrategy[] {
+  const strategies: SearchStrategy[] = [];
+
+  // PTI > 3
+  const ptiValue =
+    typeof results.PTI === "string" ? parseInt(results.PTI) : results.PTI;
+  if (ptiValue > 3) {
+    strategies.push({
+      variable: "PTI > 3",
+      routine:
+        "Processing > Mediation > Ideation > Controls > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: true,
+    });
+  }
+
+  // DEPI > 5 and CDI > 3
+  const depiValue =
+    typeof results.DEPI === "string" ? parseInt(results.DEPI) : results.DEPI;
+  const cdiValue =
+    typeof results.CDI === "string" ? parseInt(results.CDI) : results.CDI;
+  if (depiValue > 5 && cdiValue > 3) {
+    strategies.push({
+      variable: "DEPI > 5 and CDI > 3",
+      routine:
+        "Interpersonal Perception > Self-Perception > Controls > Affect > Processing > Mediation > Ideation",
+      isPrimary: true,
+    });
+  }
+
+  // DEPI > 5
+  if (depiValue > 5) {
+    strategies.push({
+      variable: "DEPI > 5",
+      routine:
+        "Affect > Controls > Self-Perception > Interpersonal Perception > Processing > Mediation > Ideation",
+      isPrimary: true,
+    });
+  }
+
+  // D < ADJ D
+  const dScore = typeof results.D_score === "number" ? results.D_score : 0;
+  const adjD = typeof results.AdjD === "number" ? results.AdjD : 0;
+  if (dScore < adjD) {
+    strategies.push({
+      variable: "D < ADJ D",
+      routine:
+        "Controls > Situation Stress > (The remaining search routine should be that identified for the next positive key variable or the list of tertiary variables.)",
+      isPrimary: true,
+    });
+  }
+
+  // CDI > 3
+  if (cdiValue > 3) {
+    strategies.push({
+      variable: "CDI > 3",
+      routine:
+        "Controls > Interpersonal Perception > Self-Perception > Affect > Processing > Mediation > Ideation",
+      isPrimary: true,
+    });
+  }
+
+  // ADJ D is Minus
+  if (adjD < 0) {
+    strategies.push({
+      variable: "ADJ D is Minus",
+      routine:
+        "Controls > (The remaining search routine should be that identified for the next positive key variable or the list of tertiary variables.)",
+      isPrimary: true,
+    });
+  }
+
+  // Lambda > 0.99
+  if (results.Lambda > 0.99) {
+    strategies.push({
+      variable: "Lambda > 0.99",
+      routine:
+        "Processing > Mediation > Ideation > Controls > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: true,
+    });
+  }
+
+  // FR+RF > 0
+  if (results.Fr + results.rF > 0) {
+    strategies.push({
+      variable: "FR+RF > 0",
+      routine:
+        "Self-Perception > Interpersonal Perception > Controls (The remaining search routine should be selected from that identified for the next positive key variable or the list of tertiary variables.)",
+      isPrimary: true,
+    });
+  }
+
+  // EB IS Introversive
+  if (results.CopingStyle === "Introversive") {
+    strategies.push({
+      variable: "EB IS Introversive",
+      routine:
+        "Ideation > Processing > Mediation > Controls > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: true,
+    });
+  }
+
+  // EB IS Extratensive
+  if (results.CopingStyle === "Extratensive") {
+    strategies.push({
+      variable: "EB IS Extratensive",
+      routine:
+        "Affect > Self-Perception > Interpersonal Perception > Controls > Processing > Mediation > Ideation",
+      isPrimary: true,
+    });
+  }
+
+  // p > a+1
+  if (results.passive_movement > results.active_movement + 1) {
+    strategies.push({
+      variable: "p > a+1",
+      routine:
+        "Ideation > Processing > Mediation > Controls > Self-Perception > Interpersonal Perception > Affect",
+      isPrimary: true,
+    });
+  }
+
+  // HVI Positive
+  if (results.HVI.toLowerCase().includes("positive")) {
+    strategies.push({
+      variable: "HVI Positive",
+      routine:
+        "Ideation > Processing > Mediation > Controls > Self-Perception > Interpersonal Perception > Affect",
+      isPrimary: true,
+    });
+  }
+
+  return strategies;
+}
+
+/**
+ * Get search strategies based on tertiary variables
+ */
+export function getTertiaryVariableStrategies(
+  results: CalculationResults,
+): SearchStrategy[] {
+  const strategies: SearchStrategy[] = [];
+
+  // OBS Positive
+  if (results.OBS.toLowerCase().includes("positive")) {
+    strategies.push({
+      variable: "OBS Positive",
+      routine:
+        "Processing > Mediation > Ideation > Controls > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: false,
+    });
+  }
+
+  // DEPI = 5
+  const depiValue =
+    typeof results.DEPI === "string" ? parseInt(results.DEPI) : results.DEPI;
+  if (depiValue === 5) {
+    strategies.push({
+      variable: "DEPI = 5",
+      routine:
+        "Affect > Controls > Self-Perception > Interpersonal Perception > Processing > Mediation > Ideation",
+      isPrimary: false,
+    });
+  }
+
+  // EA > 12
+  if (results.EA > 12) {
+    strategies.push({
+      variable: "EA > 12",
+      routine:
+        "Controls > Ideation > Processing > Mediation > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: false,
+    });
+  }
+
+  // M- > 0 or Mp > Ma or Sum6 Sp Sc > 5
+  if (results.MQual_minus > 0 || results.Mp > results.Ma || results.Sum6 > 5) {
+    strategies.push({
+      variable: "M- > 0 or Mp > Ma or Sum6 Sp Sc > 5",
+      routine:
+        "Ideation > Mediation > Processing > Controls > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: false,
+    });
+  }
+
+  // Sum Shad > FM+m or CP+C > FC+1 or Afr < 0.46
+  if (
+    results.SumShading > results.FM + results.m ||
+    results.CP + results.C > results.FC + 1 ||
+    results.Afr < 0.46
+  ) {
+    strategies.push({
+      variable: "Sum Shad > FM+m or CP+C > FC+1 or Afr < 0.46",
+      routine:
+        "Affect > Controls > Self-Perception > Interpersonal Perception > Processing > Mediation > Ideation",
+      isPrimary: false,
+    });
+  }
+
+  // X-% > 20% or Zd > +3.0 or < -3.0
+  const zdValue = typeof results.Zd === "number" ? results.Zd : 0;
+  if (results.X_minus_percent > 0.2 || zdValue > 3.0 || zdValue < -3.0) {
+    strategies.push({
+      variable: "X-% > 20% or Zd > +3.0 or < -3.0",
+      routine:
+        "Processing > Mediation > Ideation > Controls > Affect > Self-Perception > Interpersonal Perception",
+      isPrimary: false,
+    });
+  }
+
+  // 3r+(2)/R < .33
+  if (results.EgocentricityIndex < 0.33) {
+    strategies.push({
+      variable: "3r+(2)/R < .33",
+      routine:
+        "Self-Perception > Interpersonal Perception > Affect > Controls > Processing > Mediation > Ideation",
+      isPrimary: false,
+    });
+  }
+
+  // MOR > 2 or AG > 2
+  if (results.MOR > 2 || results.AG > 2) {
+    strategies.push({
+      variable: "MOR > 2 or AG > 2",
+      routine:
+        "Self-Perception > Interpersonal Perception > Controls > Ideation > Processing > Mediation > Affect",
+      isPrimary: false,
+    });
+  }
+
+  // T = 0 or > 1
+  if (results.SumT === 0 || results.SumT > 1) {
+    strategies.push({
+      variable: "T = 0 or > 1",
+      routine:
+        "Self-Perception > Interpersonal Perception > Affect > Controls > Processing > Mediation > Ideation",
+      isPrimary: false,
+    });
+  }
+
+  return strategies;
+}
 
 /**
  * Get ZEst value from Zf (number of Z-scored responses)
@@ -30,6 +281,58 @@ export function dTable(x: number): number | string {
   else d = 5;
 
   return x < 0 ? -d : d;
+}
+
+/**
+ * Determine coping style based on EB (Experience Balance) and Lambda
+ *
+ * Rules:
+ * 1. If EA < 4.0 and Lambda > 0.99 → Avoidant
+ * 2. Introversive: M > WSumC by 2+ (EA ≤ 10) or more than 2 (EA > 10)
+ * 3. Extratensive: WSumC > M by 2+ (EA ≤ 10) or more than 2 (EA > 10)
+ * 4. Ambitent: Neither side markedly different
+ *
+ * Special cases (should be evaluated carefully):
+ * - If M = 0 and WSumC > 3.5: May indicate being overwhelmed rather than true extratensive
+ * - If WSumC = 0 and M ≥ 3: May indicate being overwhelmed rather than true introversive
+ */
+export function determineCopingStyle(
+  M: number,
+  WSumC: number,
+  EA: number,
+  Lambda: number,
+): string {
+  // Exception 1: Avoidant style if EA < 4.0 and Lambda > 0.99
+  if (EA < 4.0 && Lambda > 0.99) {
+    return "Avoidant";
+  }
+
+  // Calculate the difference between M and WSumC
+  const diff = Math.abs(M - WSumC);
+
+  // Determine threshold based on EA
+  const threshold = EA <= 10 ? 2 : 2;
+  const needsMoreThan2 = EA > 10;
+
+  // Check for coping style
+  if (needsMoreThan2 ? diff > threshold : diff >= threshold) {
+    if (M > WSumC) {
+      // Exception 2: Check if being overwhelmed (WSumC = 0 and M ≥ 3)
+      if (WSumC === 0 && M >= 3) {
+        return "Introversive (verify not overwhelmed)";
+      }
+      return "Introversive";
+    } else {
+      // Exception 2: Check if being overwhelmed (M = 0 and WSumC > 3.5)
+      if (M === 0 && WSumC > 3.5) {
+        return "Extratensive (verify not overwhelmed)";
+      }
+      return "Extratensive";
+    }
+  }
+
+  // No distinctive style
+  return "Ambitent";
 }
 
 /**
@@ -230,6 +533,9 @@ export function calculateRorschach(
 
   // ===== LAMBDA =====
   const Lambda = R - F_pure !== 0 ? F_pure / (R - F_pure) : 0;
+
+  // ===== COPING STYLE =====
+  const CopingStyle = determineCopingStyle(M, WSumC, EA, Lambda);
 
   // ===== FORM QUALITY =====
   const FQx_plus = validResponses.filter((r) => r.fq === "+").length;
@@ -644,6 +950,7 @@ export function calculateRorschach(
     AdjD,
     EBPer,
     eb: `${FM + m} : ${SumShading}`,
+    CopingStyle,
     XA_percent,
     WDA_percent,
     X_plus_percent,
